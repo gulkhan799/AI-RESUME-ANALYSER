@@ -1,0 +1,626 @@
+// severity palette (semantic, mirrors global tokens)
+$severity-high: var(--color-danger);
+$severity-medium: var(--color-warning);
+$severity-low: var(--color-success);
+
+// Custom slim scrollbar instead of hiding it entirely —
+// keeps long lists scannable while staying visually unobtrusive.
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-border-strong) transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--color-border-strong);
+    border-radius: var(--radius-full);
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+// ── Page Shell ────────────────────────────────────────────────────────────────
+.interview-page {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    display: flex;
+    align-items: stretch;
+    padding: var(--space-6);
+    box-sizing: border-box;
+}
+
+// ── 3-Column Layout ───────────────────────────────────────────────────────────
+.interview-layout {
+    display: flex;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    justify-content: space-between;
+    box-shadow: var(--shadow-md);
+}
+
+.interview-divider {
+    width: 1px;
+    background-color: var(--color-border);
+    flex-shrink: 0;
+}
+
+// ── Left Nav ─────────────────────────────────────────────────────────────────
+.interview-nav {
+    width: 220px;
+    flex-shrink: 0;
+    padding: var(--space-7, 1.75rem) var(--space-4);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-1);
+
+    &__label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--color-text-muted);
+        padding: 0 var(--space-3);
+        margin-bottom: var(--space-2);
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        width: 100%;
+        padding: 0.65rem var(--space-3);
+        background: none;
+        border: none;
+        border-radius: var(--radius-sm);
+        color: var(--color-text-muted);
+        font-family: var(--font-sans);
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        text-align: left;
+        transition: background-color var(--duration-fast) var(--ease-standard),
+            color var(--duration-fast) var(--ease-standard);
+
+        &:hover {
+            background-color: var(--color-surface-hover);
+            color: var(--color-text);
+        }
+
+        &--active {
+            background-color: var(--color-accent-soft);
+            color: var(--color-accent);
+
+            .interview-nav__icon svg {
+                stroke: var(--color-accent);
+            }
+        }
+    }
+
+    &__icon {
+        display: flex;
+        align-items: center;
+        flex-shrink: 0;
+    }
+}
+
+// ── Center Content ────────────────────────────────────────────────────────────
+.interview-content {
+    flex: 1;
+    min-width: 0;
+    padding: var(--space-7, 1.75rem) var(--space-8);
+    overflow-y: auto;
+    max-height: calc(100vh - 3rem - #{var(--space-6)} * 2);
+    padding-bottom: var(--space-12);
+
+    section {
+        min-height: 100%;
+        animation: fadeIn var(--duration-base) var(--ease-standard);
+    }
+}
+
+.content-header {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-bottom: var(--space-6);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+
+    h2 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        letter-spacing: -0.01em;
+        color: var(--color-text);
+        margin: 0;
+    }
+
+    &__count {
+        font-size: 0.8rem;
+        color: var(--color-text-muted);
+        background-color: var(--color-surface-raised);
+        padding: 0.15rem 0.6rem;
+        border-radius: var(--radius-full);
+        border: 1px solid var(--color-border);
+    }
+}
+
+// ── Question Cards ────────────────────────────────────────────────────────────
+.q-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.q-card {
+    background-color: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    transition: border-color var(--duration-fast) var(--ease-standard);
+
+    &:hover {
+        border-color: var(--color-border-strong);
+    }
+
+    &__header {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--space-3);
+        padding: 0.9rem var(--space-4);
+        cursor: pointer;
+        user-select: none;
+
+        &:focus-visible {
+            outline: 2px solid var(--color-accent);
+            outline-offset: -2px;
+        }
+    }
+
+    &__index {
+        flex-shrink: 0;
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--color-accent);
+        background-color: var(--color-accent-soft);
+        border: 1px solid var(--color-accent-soft-border);
+        border-radius: var(--radius-sm);
+        padding: 0.15rem 0.4rem;
+        margin-top: 2px;
+    }
+
+    &__question {
+        flex: 1;
+        margin: 0;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--color-text);
+        line-height: 1.55;
+    }
+
+    &__chevron {
+        flex-shrink: 0;
+        color: var(--color-text-muted);
+        transition: transform var(--duration-fast) var(--ease-standard);
+        margin-top: 2px;
+
+        &--open {
+            transform: rotate(180deg);
+            color: var(--color-accent);
+        }
+    }
+
+    &__body {
+        padding: 0 var(--space-4) var(--space-4);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-3);
+        border-top: 1px solid var(--color-border);
+        padding-top: var(--space-3);
+        animation: fadeIn var(--duration-fast) var(--ease-standard);
+    }
+
+    &__section {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+
+        p {
+            margin: 0;
+            font-size: 0.835rem;
+            color: #aab2c2;
+            line-height: 1.65;
+        }
+    }
+
+    &__tag {
+        font-size: 0.68rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        padding: 0.15rem 0.5rem;
+        border-radius: var(--radius-sm);
+        width: fit-content;
+
+        &--intention {
+            color: #a78bfa;
+            background-color: rgba(167, 139, 250, 0.1);
+            border: 1px solid rgba(167, 139, 250, 0.22);
+        }
+
+        &--answer {
+            color: var(--color-success);
+            background-color: rgba(63, 185, 80, 0.1);
+            border: 1px solid rgba(63, 185, 80, 0.22);
+        }
+    }
+}
+
+// ── Road Map ──────────────────────────────────────────────────────────────────
+.roadmap-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+
+    // vertical timeline line
+    &::before {
+        content: '';
+        position: absolute;
+        left: 28px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: linear-gradient(to bottom, var(--color-accent), rgba(224, 36, 94, 0.08));
+        border-radius: 1px;
+    }
+}
+
+.roadmap-day {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-3) 0 var(--space-3) 3.5rem;
+    position: relative;
+
+    // dot on timeline
+    &::before {
+        content: '';
+        position: absolute;
+        left: 21px;
+        top: 1.05rem;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: var(--color-surface);
+        border: 2px solid var(--color-accent);
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2);
+        flex-wrap: wrap;
+    }
+
+    &__badge {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: var(--color-accent);
+        background-color: var(--color-accent-soft);
+        border: 1px solid var(--color-accent-soft-border);
+        padding: 0.1rem 0.5rem;
+        border-radius: var(--radius-full);
+    }
+
+    &__focus {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--color-text);
+    }
+
+    &__tasks {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-2);
+
+        li {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-2);
+            font-size: 0.845rem;
+            color: #a3abbc;
+            line-height: 1.55;
+        }
+    }
+
+    &__bullet {
+        flex-shrink: 0;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background-color: var(--color-text-muted);
+        margin-top: 8px;
+    }
+}
+
+// ── Right Sidebar ─────────────────────────────────────────────────────────────
+.interview-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    padding: var(--space-7, 1.75rem) var(--space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.sidebar-divider {
+    height: 1px;
+    background-color: var(--color-border);
+}
+
+// Match Score
+.match-score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+
+    &__label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--color-text-muted);
+        margin: 0;
+        align-self: flex-start;
+    }
+
+    &__ring {
+        width: 92px;
+        height: 92px;
+        border-radius: 50%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 4px solid;
+        background-color: var(--color-surface-raised);
+
+        &.score--high {
+            border-color: $severity-low;
+        }
+
+        &.score--mid {
+            border-color: $severity-medium;
+        }
+
+        &.score--low {
+            border-color: $severity-high;
+        }
+    }
+
+    &__value {
+        font-size: 1.6rem;
+        font-weight: 800;
+        color: var(--color-text);
+        line-height: 1;
+    }
+
+    &__pct {
+        font-size: 0.75rem;
+        color: var(--color-text-muted);
+        margin-top: -2px;
+    }
+
+    &__sub {
+        margin: 0;
+        font-size: 0.75rem;
+        color: var(--color-text-muted);
+        text-align: center;
+    }
+}
+
+// Skill Gaps
+.skill-gaps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+
+    &__label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--color-text-muted);
+        margin: 0;
+    }
+
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-2);
+    }
+}
+
+.skill-tag {
+    font-size: 0.775rem;
+    font-weight: 500;
+    padding: 0.3rem 0.7rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid;
+    cursor: default;
+
+    &--high {
+        color: $severity-high;
+        background-color: rgba(255, 92, 92, 0.1);
+        border-color: rgba(255, 92, 92, 0.25);
+    }
+
+    &--medium {
+        color: $severity-medium;
+        background-color: rgba(245, 166, 35, 0.1);
+        border-color: rgba(245, 166, 35, 0.25);
+    }
+
+    &--low {
+        color: $severity-low;
+        background-color: rgba(63, 185, 80, 0.1);
+        border-color: rgba(63, 185, 80, 0.25);
+    }
+}
+
+// ── Loading Screen (shared look with home page) ──────────────────────────────
+.loading-screen {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-4);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    text-align: center;
+    padding: var(--space-6);
+
+    &__spinner {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 3px solid var(--color-border);
+        border-top-color: var(--color-accent);
+        animation: spin 0.8s linear infinite;
+    }
+
+    h1 {
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+
+    p {
+        font-size: 0.875rem;
+        color: var(--color-text-muted);
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+// ── Responsive ────────────────────────────────────────────────────────────────
+
+// Tablet: drop the 3-column rail layout to a stacked layout,
+// nav becomes a horizontal scrollable tab strip up top.
+@media (max-width: 980px) {
+    .interview-page {
+        padding: var(--space-4);
+    }
+
+    .interview-layout {
+        flex-direction: column;
+        max-height: none;
+    }
+
+    .interview-nav {
+        width: 100%;
+        flex-direction: row;
+        align-items: center;
+        padding: var(--space-3) var(--space-4);
+        gap: var(--space-3);
+
+        .nav-content {
+            display: flex;
+            align-items: center;
+            gap: var(--space-2);
+            overflow-x: auto;
+            flex: 1;
+        }
+
+        &__label {
+            display: none;
+        }
+
+        &__item {
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+    }
+
+    .interview-divider {
+        width: 100%;
+        height: 1px;
+    }
+
+    .interview-content {
+        max-height: none;
+        padding: var(--space-6);
+    }
+
+    .interview-sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        padding: var(--space-5) var(--space-6);
+        gap: var(--space-6);
+
+        .match-score {
+            align-items: flex-start;
+        }
+    }
+
+    .sidebar-divider {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .interview-page {
+        padding: var(--space-2);
+    }
+
+    .interview-layout {
+        border-radius: var(--radius-md);
+    }
+
+    .interview-nav {
+        padding: var(--space-3);
+
+        button.primary-button {
+            padding-inline: var(--space-3);
+            font-size: 0.8rem;
+        }
+    }
+
+    .interview-content {
+        padding: var(--space-4);
+    }
+
+    .content-header {
+        flex-wrap: wrap;
+    }
+
+    .interview-sidebar {
+        flex-direction: column;
+        padding: var(--space-5) var(--space-4);
+    }
+}
